@@ -1,0 +1,37 @@
+
+<div class="bg-light p-5 rounded-lg m-3">
+  <h1 class="display-4">Bem vindo ao Blog do node!</h1>
+  <p class="lead">Este é um projeto de estudo desenvolvido por Agnaldo Júnior ao final do curso de Node JS, utilizando Express + MongoDB com orientação do canal do youtube Victor Lima .</p>
+  <hr class="my-4">
+  <p>Aqui você vai ler sobre as novidades do mundo na computação.</p>
+  
+{{#if user}}
+    <a class="btn btn-primary btn-lg " href="#" role="button">Você já está logado</a>
+  {{else}}
+    <a class="btn btn-primary btn-lg " href="/usuarios/registro" role="button">Crie uma conta</a>
+    <a class="btn btn-primary btn-lg" href="/usuarios/login" role="button">Login</a>
+{{/if}}
+</div>
+
+
+<h2 class="mt-4">Postagens recentes: </h2>
+<br>
+
+{{#each postagens}}
+<div class="card mt-4">
+    <div class="card-body">
+        <h3>{{titulo}}</h3>
+        <p>{{descricao}}</p> 
+        <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+        <hr>
+        <small>Categoria: {{categoria.nome}}</small> <br>
+        <small>Data de publicação: {{data}}</small>
+        
+    </div>
+</div>
+
+{{else}}
+
+    <h4>⚙️Nenhuma postagens cadastrada...</h4>
+
+{{/each}}

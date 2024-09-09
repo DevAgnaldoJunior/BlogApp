@@ -1,0 +1,65 @@
+<h3>Nova categoria:</h3>
+<div class="card">
+    <div class="card-body">
+        <!-- Exibição de erros -->
+        <div id="response" class="alert" style="display: none;"></div>
+
+        <form id="categoriaForm" action="/admin/categorias/nova" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Nome da Categoria" class="form-control">
+            <label for="slug">Slug:</label>
+            <input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control">
+            <br>
+            <button type="submit" class="btn btn-success">Criar categoria</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('categoriaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const slug = document.getElementById('slug').value;
+
+            fetch('/admin/categorias/nova', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, slug })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseElement = document.getElementById('response');
+                
+                // Limpar o conteúdo anterior
+                responseElement.innerHTML = '';
+                
+                if (data.erros) {
+                    // Mostrar erros
+                    responseElement.className = 'alert alert-danger';
+                    responseElement.style.display = 'block';
+                    
+                    // Criar uma div para cada erro
+                    data.erros.forEach(erro => {
+                        const erroDiv = document.createElement('div');
+                        erroDiv.textContent = erro;
+                        responseElement.appendChild(erroDiv);
+                    });
+                } else if (data.success_msg) {
+                    // Mostrar mensagem de sucesso
+                    responseElement.className = 'alert alert-success';
+                    responseElement.textContent = data.success_msg;
+                    responseElement.style.display = 'block';
+                    window.location.href = "/admin/categorias"
+
+                    // Opcionalmente, você pode redirecionar após o sucesso
+                    // window.location.href = "/admin/categorias";
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</div>
